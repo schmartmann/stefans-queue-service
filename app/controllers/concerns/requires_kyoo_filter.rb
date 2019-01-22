@@ -2,7 +2,13 @@ module RequireKyooFilter
   class RequiresKyoo
 
     def before( controller )
-      if controller.kyoo_uuid.nil?
+      if controller.kyoo_uuid.present?
+        if kyoo_policy.present?
+          kyoo_policy.kyoo
+        else
+          puts 'Current user has no policy for the request kyoo'
+        end
+      else
         puts "The 'kyoo_uuid' parameter is required"
       end
     end
@@ -19,6 +25,10 @@ module RequireKyooFilter
 
     def kyoo_uuid
       params[ :kyoo_uuid ]
+    end
+
+    def kyoo_policy
+      current_user.policies.where( kyoo_uuid: kyoo_uuid ).first
     end
   end
 end
