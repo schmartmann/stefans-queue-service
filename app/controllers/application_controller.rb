@@ -1,4 +1,26 @@
 class ApplicationController < ActionController::API
+  # before_action :authenticate_user!
+
+  include RequiresKyooFilter
+
+  private
+
+  def uuid
+    @uuid ||= begin
+      if result = params.permit( :uuid )
+        result[ :uuid ]
+      end
+    end
+  end
+
+  def kyoo_uuid
+    @kyoo_uuid ||= begin
+      if result = params.permit( :kyoo_uuid )
+        result[ :kyoo_uuid ]
+      end
+    end
+  end
+
   def render_resource( resource )
     if resource.errors.empty?
       render json: resource
