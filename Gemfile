@@ -31,6 +31,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'rack-cors'
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'fabrication'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.8'
