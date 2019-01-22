@@ -6,7 +6,7 @@ RSpec.describe 'POST /signup', type: :request do
     {
       user: {
         email: 'user@example.com',
-        password: 'assw0rd'
+        password: 'passw0rd'
       }
     }
   end
@@ -25,7 +25,11 @@ RSpec.describe 'POST /signup', type: :request do
 
   context 'when user already exists' do
     before do
-      Fabricate( :user, email: params[ :user][ :email ] )
+      Fabricate( :user,
+                  email: params[ :user][ :email ],
+                  password: params[ :user ][ :password ]
+                )
+
       post url, params: params
     end
 
@@ -35,6 +39,30 @@ RSpec.describe 'POST /signup', type: :request do
 
     it 'returns validation errors' do
       expect( json[ 'errors' ].first[ 'title'] ).to eq( 'Bad Request' )
+    end
+  end
+
+  context 'when user password is missing' do
+    before do
+      user = params[ :user ]
+      post url, params: { user: { email: user[ :email ], password: nil  } }
+    end
+
+    it 'returns 400' do
+      expect( response.status ).to eq( 400 )
+    end
+
+    it 'returns validation errors' do
+      expect( json[ 'errors' ].first[ 'title'] ).to eq( 'Bad Request' )
+    end
+
+    it 'returns correct error message' do
+      error = json[ 'errors' ].first
+
+      expect( error[ 'detail' ][ 'password' ] ).to include(
+        "can't be blank",
+        'is too short (minimum is 8 characters)'
+      )
     end
   end
 end
