@@ -14,8 +14,7 @@ class Message < ApplicationRecord
   #----------------------------------------------------------------------------
   # validations
 
-  validates :read?,
-            presence: true
+  validates :read, inclusion: { in: [ true, false ] }
 
   #----------------------------------------------------------------------------
   # associations
