@@ -30,7 +30,6 @@ RSpec.describe 'POST /signup', type: :request do
     end
 
     it 'returns 400' do
-      binding.pry
       expect( response.status ).to eq( 400 )
     end
 

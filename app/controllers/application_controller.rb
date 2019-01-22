@@ -7,6 +7,19 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def missing_resource( exception )
+    render json: {
+      errors: [
+        {
+          status: '404',
+          title: 'Missing resource',
+          detail: exception.message,
+          code: '104'
+        }
+      ]
+    }
+  end
+
   def validation_error( resource )
     render json: {
       errors: [
@@ -19,5 +32,4 @@ class ApplicationController < ActionController::API
       ]
     }, status: :bad_request
   end
-
 end
