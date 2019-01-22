@@ -7,20 +7,20 @@ class Policy < ApplicationRecord
   ATTRIBUTES = %i(
     uuid
     id
-    user_uuid
-    kyoo_uuid
+    user_id
+    kyoo_id
   ).freeze
 
   #----------------------------------------------------------------------------
   # validations
 
-  validates :user_uuid,
+  validates :user_id,
             presence: true,
-            uniqueness: { scope: :kyoo_uuid }
+            uniqueness: { scope: :kyoo_id }
 
-  validates :kyoo_uuid,
+  validates :kyoo_id,
             presence: true,
-            uniqueness: { scope: :user_uuid }
+            uniqueness: { scope: :user_id }
 
   #----------------------------------------------------------------------------
   # associations

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get     'kyoos',        to: 'kyoos#query',   as: 'kyoos_query'
   post    'kyoos',        to: 'kyoos#write',   as: 'kyoos_write'
   get     'kyoos/:uuid',  to: 'kyoos#read',    as: 'kyoos_read'
-  delete 'kyoos/:uuid',  to: 'kyoos#destroy', as: 'kyoos_destroy'
+  delete  'kyoos/:uuid',  to: 'kyoos#destroy', as: 'kyoos_destroy'
 
   get     'kyoos/:kyoo_uuid/messages',  to: 'messages#query',          as: 'messages_query'
   post    'kyoos/:kyoo_uuid/messages',  to: 'messages#write',          as: 'messages_write'

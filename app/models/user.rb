@@ -13,4 +13,10 @@ class User < ApplicationRecord
   validates :password,
             presence: true,
             length: { minimum: 8 }
+
+  has_many :policies
+
+  def kyoos
+    Kyoo.where( id: self.policies.pluck( :kyoo_id ) )
+  end
 end

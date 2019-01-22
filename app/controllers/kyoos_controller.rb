@@ -3,6 +3,6 @@ class KyoosController < ApplicationController
   before_action :authenticate_user!
 
   def query
-    render json: Kyoo.all
+    render json: current_user.kyoos
   end
 end
