@@ -1,4 +1,4 @@
-module RequireKyooFilter
+module RequiresKyooFilter
   class RequiresKyoo
 
     def before( controller )
