@@ -24,11 +24,14 @@ ActiveRecord::Schema.define(version: 2019_01_22_021850) do
 
   create_table "kyoos", force: :cascade do |t|
     t.string "name"
+    t.string "uuid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.json "message", default: {}, null: false
     t.bigint "kyoo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
