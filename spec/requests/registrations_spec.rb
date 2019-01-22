@@ -17,5 +17,25 @@ RSpec.describe 'POST /signup', type: :request do
     it 'returns 200' do
       expect( response.body ).to match_schema( 'user' )
     end
+
+    it 'returns a new user' do
+      expect( response.body ).to match_schema( 'user' )
+    end
+  end
+
+  context 'when user already exists' do
+    before do
+      Fabricate( :user, email: params[ :user][ :email ] )
+      post url, params: params
+    end
+
+    it 'returns 400' do
+      binding.pry
+      expect( response.status ).to eq( 400 )
+    end
+
+    it 'returns validation errors' do
+      expect( json[ 'errors' ].first[ 'title'] ).to eq( 'Bad Request' )
+    end
   end
 end
