@@ -20,6 +20,6 @@ class Kyoo < ApplicationRecord
   #----------------------------------------------------------------------------
   # associations
 
-  has_many :messages
-  has_many :policies
+  has_many :messages, dependent: :destroy
+  has_many :policies, dependent: :destroy
 end
