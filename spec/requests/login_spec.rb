@@ -14,7 +14,6 @@ RSpec.describe 'POST /login', type: :request do
 
   context 'when params are correct' do
     before do
-      binding.pry
       post url, params: params
     end
 
