@@ -7,6 +7,7 @@ gem 'devise-jwt'
 
 gem 'json-schema', '~> 2.7'
 gem 'dotenv-rails'
+gem 'active_model_serializers'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2'
