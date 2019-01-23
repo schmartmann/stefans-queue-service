@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include UUID
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
@@ -15,8 +16,5 @@ class User < ApplicationRecord
             length: { minimum: 8 }
 
   has_many :policies
-
-  def kyoos
-    Kyoo.where( id: self.policies.pluck( :kyoo_id ) )
-  end
+  has_many :kyoos, through: :policies
 end
