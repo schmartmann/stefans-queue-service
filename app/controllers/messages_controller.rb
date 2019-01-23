@@ -7,6 +7,6 @@ class MessagesController < ApplicationController
   end
 
   def kyoo
-      @kyoo ||= current_user.kyoos.where( uuid: kyoo_uuid ).first
+    @kyoo ||= current_user.kyoos.find_by( uuid: kyoo_uuid )
   end
 end
