@@ -45,4 +45,17 @@ module RenderHelper
       ]
     }, status: :bad_request
   end
+
+  def fatal_error
+    render json: {
+      errors: [
+        {
+          status: '500',
+          title: 'Bad Request',
+          detail: 'Something went awray! That sucks!',
+          code: '100'
+        }
+      ]
+    }, status: :bad_request
+  end
 end
