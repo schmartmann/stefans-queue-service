@@ -1,5 +1,5 @@
 Fabricator( :message ) do
   uuid { SecureRandom.hex }
-  message{ { "hello": "world" } }
+  message_body { { "hello": "world" } }
   read { false }
 end

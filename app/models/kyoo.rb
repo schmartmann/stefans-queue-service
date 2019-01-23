@@ -22,4 +22,6 @@ class Kyoo < ApplicationRecord
 
   has_many :messages, dependent: :destroy
   has_many :policies, dependent: :destroy
+
+  has_many :users, through: :policies
 end
