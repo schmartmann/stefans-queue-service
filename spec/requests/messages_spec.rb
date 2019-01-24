@@ -19,6 +19,33 @@ RSpec.describe 'GET /kyoos/:kyoo_uuid/messages', type: :request do
       expect( json.first ).to match_schema( 'message' )
     end
   end
+
+  context 'when messages have mixed read states' do
+    before do
+      kyoo      = Fabricate( :kyoo_with_messages )
+      user      = kyoo.users.first
+      kyoo_uuid = kyoo.uuid
+      url       = "/kyoos/#{ kyoo_uuid }/messages"
+
+      get url, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns array of messages' do
+      json.each do | message |
+        expect( message ).to match_schema( 'message' )
+      end
+    end
+
+    it 'scopes messages by unread state' do
+      read_state_array = json.pluck( 'read' )
+
+      expect( read_state_array ).to_not include( true )
+    end
+  end
 end
 
 RSpec.describe 'GET /kyoos/:kyoo_uuid/messages/:uuid', type: :request do

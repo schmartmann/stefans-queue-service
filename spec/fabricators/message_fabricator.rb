@@ -4,9 +4,14 @@ Fabricator( :message ) do
   read { false }
 
   before_create do | message |
-    @user = Fabricate( :user )
-    @kyoo = Fabricate( :kyoo )
-    @policy = Fabricate( :policy, user: @user, kyoo: @kyoo )
-    message.kyoo = @kyoo
+    unless message.kyoo.present?
+      kyoo = Fabricate( :kyoo )
+      message.kyoo = kyoo
+    end
+
+    unless message.kyoo.users.any?
+      user = Fabricate( :user )
+      policy = Fabricate( :policy, user: user, kyoo: kyoo )
+    end
   end
 end
