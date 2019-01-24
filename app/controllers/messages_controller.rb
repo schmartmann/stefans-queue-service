@@ -26,6 +26,25 @@ class MessagesController < ApplicationController
     render_resource( message )
   end
 
+  def update
+    if new_message_read_state
+
+      message = current_user.
+                  kyoos.
+                  where( uuid: kyoo_uuid ).
+                  first.
+                  messages.
+                  where( uuid: uuid ).
+                  first
+
+      if message.read_message
+        render_resource( message )
+      else
+        missing_param( Exception.new( "Cannot set unread state on read message #{ uuid }" ) )
+      end
+    end
+  end
+
   def destroy
     message = current_user.
                 kyoos.
@@ -60,6 +79,10 @@ class MessagesController < ApplicationController
 
   def message
     @message ||= kyoo.messages.unread.where( uuid: uuid )
+  end
+
+  def new_message_read_state
+    @message_read ||= message_params[ :read ]
   end
 
   def message_params

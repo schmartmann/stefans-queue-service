@@ -23,4 +23,10 @@ class Message < ApplicationRecord
   # associations
 
   belongs_to :kyoo
+
+  def read_message
+    unless self.read
+      self.update( read: true )
+    end
+  end
 end

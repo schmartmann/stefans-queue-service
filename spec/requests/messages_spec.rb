@@ -126,6 +126,64 @@ RSpec.describe 'POST /kyoos/:kyoo_uuid/messages', type: :request do
   end
 end
 
+RSpec.describe 'POST /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
+  let( :message )    { Fabricate( :message ) }
+  let( :kyoo_uuid )  { message.kyoo.uuid }
+  let( :uuid )       { message.uuid }
+  let( :user )       { message.kyoo.users.first }
+  let( :url )        { "/kyoos/#{ kyoo_uuid }/messages/#{uuid }" }
+  let( :params ) do
+    {
+      message: {
+        uuid: message.uuid,
+        read: true
+      }
+    }.to_json
+  end
+
+  context 'when params are correct' do
+    before do
+      post url, params: params, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns a message' do
+      expect( json ).to match_schema( 'message' )
+    end
+
+    it 'returns message.read' do
+      expect( json[ 'read' ] ).to be( true )
+    end
+  end
+
+  context 'when message is already read' do
+    before do
+      message.update( read: true )
+
+      post url, params: params, headers: auth_headers( user )
+    end
+
+    it 'returns 400' do
+      expect( response ).to have_http_status( 400 )
+    end
+
+    it 'returns validation errors' do
+      expect( json[ 'errors' ].first[ 'title' ] ).to eq( 'Missing Param' )
+    end
+
+    it 'returns correct error message' do
+      error = json[ 'errors' ].first
+
+      expect( error[ 'detail' ] ).to eq(
+        "Cannot set unread state on read message #{ uuid }"
+      )
+    end
+  end
+end
+
 RSpec.describe 'DELETE /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
   let( :message )    { Fabricate( :message ) }
   let( :kyoo_uuid )  { message.kyoo.uuid }
