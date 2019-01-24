@@ -1,4 +1,5 @@
 Fabricator( :policy ) do
-  user
+  uuid { SecureRandom.hex }
   kyoo
+  user
 end
