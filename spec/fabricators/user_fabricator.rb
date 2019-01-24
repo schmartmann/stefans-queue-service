@@ -1,5 +1,4 @@
-Fabricator( :user, from :user ) do
-  email { 'foo@bar.co.jp' }
-  password { 'password' }
-  policies( count: 1, fabricator: :policy_base )
+Fabricator( :user ) do
+  email { Faker::Internet.email }
+  password { Faker::Internet.password( 8 ) }
 end

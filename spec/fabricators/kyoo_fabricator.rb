@@ -1,4 +1,4 @@
 Fabricator( :kyoo ) do
   uuid { SecureRandom.hex }
-  name { 'test queue' }
+  name { Faker::TheThickOfIt.department }
 end

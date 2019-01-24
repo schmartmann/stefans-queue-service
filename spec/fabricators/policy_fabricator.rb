@@ -1,7 +1,4 @@
-Fabricator( :policy, from: :policy ) do
-  # user
-  # kyoo
-end
-
-Fabricator( :policy_base, from: :policy ) do
+Fabricator( :policy ) do
+  user
+  kyoo
 end
