@@ -24,14 +24,10 @@ class KyoosController < ApplicationController
   end
 
   def destroy
-    kyoo = Kyoo.find_by( uuid: uuid )
+    kyoo = kyoo.first
 
     unless kyoo.nil?
-      if kyoo.destroy
-        render json: {
-            message: "Kyoo #{ uuid } successfully deleted"
-          }
-      else
+      unless kyoo.destroy
         fatal_error
       end
     else

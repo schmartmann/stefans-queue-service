@@ -130,3 +130,21 @@ RSpec.describe 'POST /kyoos', type: :request do
     end
   end
 end
+
+RSpec.describe 'DELETE /kyoos/:uuid', type: :request do
+  let( :kyoo )  { Fabricate(:kyoo_with_users ) }
+  let( :user )  { kyoo.users.first }
+  let( :uuid )  { kyoo.uuid }
+  let( :url )   { "/kyoos/#{ uuid }" }
+
+  context 'when params are correct' do
+    before do
+      binding.pry
+      delete url, headers: auth_headers( user )
+    end
+
+    it 'returns 204' do
+      expect( response ).to have_http_status( 204 )
+    end
+  end
+end
