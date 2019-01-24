@@ -10,16 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_21_144714) do
+ActiveRecord::Schema.define(version: 2019_01_24_033328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "jwt_blacklist", force: :cascade do |t|
+  create_table "jwt_blacklists", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["jti"], name: "index_jwt_blacklist_on_jti"
+    t.index ["jti"], name: "index_jwt_blacklists_on_jti"
+  end
+
+  create_table "kyoos", force: :cascade do |t|
+    t.string "name"
+    t.string "uuid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.boolean "read", default: false, null: false
+    t.text "message_body", default: "\"\"", null: false
+    t.bigint "kyoo_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kyoo_id"], name: "index_messages_on_kyoo_id"
+  end
+
+  create_table "policies", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.bigint "user_id"
+    t.bigint "kyoo_id"
+    t.index ["kyoo_id"], name: "index_policies_on_kyoo_id"
+    t.index ["user_id"], name: "index_policies_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -30,8 +55,12 @@ ActiveRecord::Schema.define(version: 2019_01_21_144714) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "messages", "kyoos"
+  add_foreign_key "policies", "kyoos"
+  add_foreign_key "policies", "users"
 end

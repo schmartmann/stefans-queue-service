@@ -4,32 +4,24 @@
   "definitions": {},
   "id": "http://example.com/example.json",
   "properties": {
-    "created_at": {
-      "type": "string"
-    },
-    "email": {
-      "type": "string"
-    },
     "id": {
       "type": "integer"
     },
     "uuid": {
       "type": "string"
     },
-    "policies": {
-      "type": "array"
+    "user": {
+      "type": "object"
     },
-    "updated_at": {
-      "type": "string"
+    "kyoo": {
+      "type": "object"
     }
   },
   "required": [
-      "updated_at",
-      "created_at",
       "id",
       "uuid",
-      "email",
-      "policies"
+      "user",
+      "kyoo"
   ],
   "type": "object"
 }

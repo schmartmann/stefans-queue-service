@@ -1,4 +1,4 @@
 Fabricator( :user ) do
-  email { 'foo@bar.co.jp' }
-  password { 'password' }
+  email { Faker::Internet.email }
+  password { Faker::Internet.password( 8 ) }
 end
