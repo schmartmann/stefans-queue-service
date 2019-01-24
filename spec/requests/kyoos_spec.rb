@@ -145,5 +145,10 @@ RSpec.describe 'DELETE /kyoos/:uuid', type: :request do
     it 'returns 204' do
       expect( response ).to have_http_status( 204 )
     end
+
+    it 'deletes the kyoo' do
+      modified_kyoo = Kyoo.where( uuid: kyoo.uuid )
+      expect( modified_kyoo ).to eq( [] )
+    end
   end
 end

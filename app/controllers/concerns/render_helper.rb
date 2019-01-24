@@ -17,7 +17,7 @@ module RenderHelper
           code: '104'
         }
       ]
-    }
+    }, status: :bad_request
   end
 
   def missing_param( exception )
@@ -30,7 +30,7 @@ module RenderHelper
           code: '100'
         }
       ]
-    }
+    }, status: :bad_request
   end
 
   def validation_error( resource )

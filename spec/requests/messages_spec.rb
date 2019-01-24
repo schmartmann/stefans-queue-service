@@ -98,3 +98,39 @@ RSpec.describe 'POST /kyoos/:kyoo_uuid/messages', type: :request do
     end
   end
 end
+
+RSpec.describe 'DELETE /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
+  let( :message )    { Fabricate( :message ) }
+  let( :kyoo_uuid )  { message.kyoo.uuid }
+  let( :uuid )       { message.uuid }
+  let( :user )       { message.kyoo.users.first }
+  let( :url )        { "/kyoos/#{ kyoo_uuid }/messages/#{uuid }" }
+
+  context 'when params are correct' do
+    before do
+      delete url, headers: auth_headers( user )
+    end
+
+    it 'returns 204' do
+      expect( response ).to have_http_status( 204 )
+    end
+
+    it 'deletes the message' do
+      modified_message = Message.where( uuid: uuid )
+
+      expect( modified_message ).to eq( [] )
+    end
+  end
+
+  context 'when uuid param is incorrect' do
+    before do
+      url = "/kyoos/#{ kyoo_uuid }/messages/#{ 'blip_blop' }"
+
+      delete url, headers: auth_headers( user )
+    end
+
+    it 'returns 400' do
+      expect( response ).to have_http_status( 400 )
+    end
+  end
+end
