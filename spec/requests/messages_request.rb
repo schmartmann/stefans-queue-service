@@ -1,54 +1,54 @@
 require 'rails_helper'
 
-# RSpec.describe 'GET /kyoos/:kyoo_uuid/messages', type: :request do
-#   let( :user )      { Fabricate( :user ) }
-#   let( :kyoo )      { Fabricate( :kyoo ) }
-#   let( :kyoo_uuid ) { kyoo.uuid }
-#   let( :url )       { "/kyoos/#{ kyoo_uuid }/messages" }
-#
-#   context 'when params are correct' do
-#     before do
-#       Fabricate( :message, kyoo: kyoo )
-#       Fabricate( :policy, user: user, kyoo: kyoo )
-#
-#       get url, headers: auth_headers( user )
-#     end
-#
-#     it 'returns 200' do
-#       expect( response ).to have_http_status( 200 )
-#     end
-#
-#     it 'returns one message' do
-#       expect( json.first ).to match_schema( 'message' )
-#     end
-#   end
-# end
-#
-# RSpec.describe 'GET /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
-#   let( :user )      { Fabricate( :user ) }
-#   let( :kyoo )      { Fabricate( :kyoo ) }
-#   let( :kyoo_uuid ) { kyoo.uuid }
-#
-#   context 'when params are correct' do
-#     before do
-#       message = Fabricate( :message, kyoo: kyoo )
-#
-#       Fabricate( :policy, user: user, kyoo: kyoo )
-#
-#       url = "/kyoos/#{ kyoo_uuid }/messages/#{ message.uuid }"
-#
-#       get url, headers: auth_headers( user )
-#     end
-#
-#     it 'returns 200' do
-#       expect( response ).to have_http_status( 200 )
-#     end
-#
-#     it 'returns one message' do
-#       expect( json.first ).to match_schema( 'message' )
-#     end
-#   end
-# end
+RSpec.describe 'GET /kyoos/:kyoo_uuid/messages', type: :request do
+  let( :user )      { Fabricate( :user ) }
+  let( :kyoo )      { Fabricate( :kyoo ) }
+  let( :kyoo_uuid ) { kyoo.uuid }
+  let( :url )       { "/kyoos/#{ kyoo_uuid }/messages" }
+
+  context 'when params are correct' do
+    before do
+      Fabricate( :message, kyoo: kyoo )
+      Fabricate( :policy, user: user, kyoo: kyoo )
+
+      get url, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns one message' do
+      expect( json.first ).to match_schema( 'message' )
+    end
+  end
+end
+
+RSpec.describe 'GET /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
+  let( :user )      { Fabricate( :user ) }
+  let( :kyoo )      { Fabricate( :kyoo ) }
+  let( :kyoo_uuid ) { kyoo.uuid }
+
+  context 'when params are correct' do
+    before do
+      message = Fabricate( :message, kyoo: kyoo )
+
+      Fabricate( :policy, user: user, kyoo: kyoo )
+
+      url = "/kyoos/#{ kyoo_uuid }/messages/#{ message.uuid }"
+
+      get url, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns one message' do
+      expect( json.first ).to match_schema( 'message' )
+    end
+  end
+end
 
 RSpec.describe 'POST /kyoos/:kyoo_uuid/messages', type: :request do
   let( :user )  { Fabricate( :user ) }
