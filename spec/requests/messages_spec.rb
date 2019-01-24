@@ -19,6 +19,33 @@ RSpec.describe 'GET /kyoos/:kyoo_uuid/messages', type: :request do
       expect( json.first ).to match_schema( 'message' )
     end
   end
+
+  context 'when messages have mixed read states' do
+    before do
+      kyoo      = Fabricate( :kyoo_with_messages )
+      user      = kyoo.users.first
+      kyoo_uuid = kyoo.uuid
+      url       = "/kyoos/#{ kyoo_uuid }/messages"
+
+      get url, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns array of messages' do
+      json.each do | message |
+        expect( message ).to match_schema( 'message' )
+      end
+    end
+
+    it 'scopes messages by unread state' do
+      read_state_array = json.pluck( 'read' )
+
+      expect( read_state_array ).to_not include( true )
+    end
+  end
 end
 
 RSpec.describe 'GET /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
@@ -94,6 +121,64 @@ RSpec.describe 'POST /kyoos/:kyoo_uuid/messages', type: :request do
 
       expect( error[ 'detail' ][ 'message_body' ] ).to include(
         'can\'t be blank',
+      )
+    end
+  end
+end
+
+RSpec.describe 'POST /kyoos/:kyoo_uuid/messages/:uuid', type: :request do
+  let( :message )    { Fabricate( :message ) }
+  let( :kyoo_uuid )  { message.kyoo.uuid }
+  let( :uuid )       { message.uuid }
+  let( :user )       { message.kyoo.users.first }
+  let( :url )        { "/kyoos/#{ kyoo_uuid }/messages/#{uuid }" }
+  let( :params ) do
+    {
+      message: {
+        uuid: message.uuid,
+        read: true
+      }
+    }.to_json
+  end
+
+  context 'when params are correct' do
+    before do
+      post url, params: params, headers: auth_headers( user )
+    end
+
+    it 'returns 200' do
+      expect( response ).to have_http_status( 200 )
+    end
+
+    it 'returns a message' do
+      expect( json ).to match_schema( 'message' )
+    end
+
+    it 'returns message.read' do
+      expect( json[ 'read' ] ).to be( true )
+    end
+  end
+
+  context 'when message is already read' do
+    before do
+      message.update( read: true )
+
+      post url, params: params, headers: auth_headers( user )
+    end
+
+    it 'returns 400' do
+      expect( response ).to have_http_status( 400 )
+    end
+
+    it 'returns validation errors' do
+      expect( json[ 'errors' ].first[ 'title' ] ).to eq( 'Missing Param' )
+    end
+
+    it 'returns correct error message' do
+      error = json[ 'errors' ].first
+
+      expect( error[ 'detail' ] ).to eq(
+        "Cannot set unread state on read message #{ uuid }"
       )
     end
   end

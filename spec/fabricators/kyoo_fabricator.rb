@@ -21,8 +21,14 @@ Fabricator( :kyoo_with_messages, from: :kyoo ) do
     end
 
     unless kyoo.messages.any?
-      rand( 1..5 ).times do
-        Fabricate( :message, kyoo: kyoo )
+      messages = []
+
+      rand( 1..5 ).times do | time |
+        messages << Fabricate( :message, kyoo: kyoo )
+      end
+
+      rand( 1..4 ).times do | time |
+        messages[ rand( messages.length ) ].update( read: true )
       end
     end
   end

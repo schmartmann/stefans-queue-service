@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get     'kyoos/:kyoo_uuid/messages',  to: 'messages#query',          as: 'messages_query'
   post    'kyoos/:kyoo_uuid/messages',  to: 'messages#write',          as: 'messages_write'
   get     'kyoos/:kyoo_uuid/messages/:uuid',  to: 'messages#read',     as: 'messages_read'
+  post    'kyoos/:kyoo_uuid/messages/:uuid',  to: 'messages#update',   as: 'messages_update'
   delete  'kyoos/:kyoo_uuid/messages/:uuid',  to: 'messages#destroy',  as: 'messages_destroy'
 
   get     'policies',        to: 'policies#query',    as: 'policies_query'
