@@ -139,7 +139,6 @@ RSpec.describe 'DELETE /kyoos/:uuid', type: :request do
 
   context 'when params are correct' do
     before do
-      binding.pry
       delete url, headers: auth_headers( user )
     end
 

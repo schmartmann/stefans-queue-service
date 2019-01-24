@@ -24,7 +24,7 @@ class KyoosController < ApplicationController
   end
 
   def destroy
-    kyoo = kyoo.first
+    kyoo = current_user.kyoos.where( uuid: uuid ).first
 
     unless kyoo.nil?
       unless kyoo.destroy
