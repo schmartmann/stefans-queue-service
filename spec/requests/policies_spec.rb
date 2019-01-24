@@ -94,3 +94,33 @@ RSpec.describe 'POST /policies', type: :request do
     end
   end
 end
+
+RSpec.describe 'DELETE /policies/:uuid', type: :request do
+  let( :policy )  { Fabricate( :policy ) }
+  let( :user )    { policy.user }
+  let( :uuid )    { policy.uuid }
+  let( :url )     { "/policies/#{ uuid }" }
+
+  context 'when params are correct' do
+    before do
+      delete url, headers: auth_headers( user )
+    end
+
+    it 'returns 204' do
+      expect( response ).to have_http_status( 204 )
+    end
+
+    it 'returns no record' do
+      expect( response.body ).to eq( '' )
+    end
+
+    it 'deletes the policy' do
+      modified_policy = Policy.where( user_id: user.id )
+      expect( modified_policy ).to eq( [] )
+    end
+
+    it 'deletes user\'s access to kyoo' do
+      binding.pry
+    end
+  end
+end

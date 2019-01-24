@@ -132,10 +132,11 @@ RSpec.describe 'POST /kyoos', type: :request do
 end
 
 RSpec.describe 'DELETE /kyoos/:uuid', type: :request do
-  let( :kyoo )  { Fabricate(:kyoo_with_users ) }
-  let( :user )  { kyoo.users.first }
-  let( :uuid )  { kyoo.uuid }
-  let( :url )   { "/kyoos/#{ uuid }" }
+  let( :kyoo )     { Fabricate( :kyoo_with_messages ) }
+  let( :user )     { kyoo.users.first }
+  let( :uuid )     { kyoo.uuid }
+  let( :messages ) { kyoo.messages }
+  let( :url )      { "/kyoos/#{ uuid }" }
 
   context 'when params are correct' do
     before do
@@ -146,9 +147,19 @@ RSpec.describe 'DELETE /kyoos/:uuid', type: :request do
       expect( response ).to have_http_status( 204 )
     end
 
+    it 'returns no record' do
+      expect( response.body ).to eq( '' )
+    end
+
     it 'deletes the kyoo' do
       modified_kyoo = Kyoo.where( uuid: kyoo.uuid )
       expect( modified_kyoo ).to eq( [] )
+    end
+
+    it 'deletes associated messages' do
+      uuids = messages.pluck( :uuid )
+      modified_messages = Message.where( uuid: uuids )
+      expect( modified_messages ).to eq( [] )
     end
   end
 end
