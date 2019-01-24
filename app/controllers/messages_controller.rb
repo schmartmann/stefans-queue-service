@@ -21,7 +21,12 @@ class MessagesController < ApplicationController
 
   def write
     unless existing_message
-      binding.pry
+      message = kyoo.messages.new( message_params )
+
+      message.save
+      render_resource( message )
+    else
+      render_resource( existing_message )
     end
   end
 

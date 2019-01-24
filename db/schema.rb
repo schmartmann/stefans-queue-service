@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_185850) do
+ActiveRecord::Schema.define(version: 2019_01_24_033328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2019_01_23_185850) do
   create_table "messages", force: :cascade do |t|
     t.string "uuid", null: false
     t.boolean "read", default: false, null: false
-    t.json "message_body", default: {}, null: false
+    t.text "message_body", default: "\"\"", null: false
     t.bigint "kyoo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -15,6 +15,7 @@ class Message < ApplicationRecord
   # validations
 
   validates :read, inclusion: { in: [ true, false ] }
+  validates :message_body, presence: true
 
   #----------------------------------------------------------------------------
   # associations
