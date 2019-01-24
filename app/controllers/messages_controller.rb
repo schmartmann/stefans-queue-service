@@ -27,12 +27,27 @@ class MessagesController < ApplicationController
   end
 
   def destroy
+    message = current_user.
+                kyoos.
+                where( uuid: kyoo_uuid ).
+                first.
+                messages.
+                where( uuid: uuid ).
+                first
+
+    unless message.nil?
+      unless message.destroy
+        fatal_error
+      end
+    else
+      missing_resource( Exception.new( "Could not retrieve message #{ uuid }" ) )
+    end
   end
 
   private
 
   def kyoo
-    @kyoo ||= current_user.kyoos.find_by( uuid: kyoo_uuid )
+    @kyoo ||= current_user.kyoos.where( uuid: kyoo_uuid ).first
   end
 
   def uuid
@@ -48,6 +63,8 @@ class MessagesController < ApplicationController
   end
 
   def message_params
-    params.require( :message ).permit( PERMITTED_ATTRIBUTES )
+    params.
+      require( :message ).
+      permit( PERMITTED_ATTRIBUTES )
   end
 end

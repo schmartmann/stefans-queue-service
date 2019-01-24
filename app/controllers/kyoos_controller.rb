@@ -17,21 +17,22 @@ class KyoosController < ApplicationController
   end
 
   def write
-    kyoo = current_user.kyoos.new( kyoo_params )
+    kyoo = current_user.
+            kyoos.
+            new( kyoo_params )
 
     kyoo.save
     render_resource( kyoo )
   end
 
   def destroy
-    kyoo = Kyoo.find_by( uuid: uuid )
+    kyoo = current_user.
+            kyoos.
+            where( uuid: uuid ).
+            first
 
     unless kyoo.nil?
-      if kyoo.destroy
-        render json: {
-            message: "Kyoo #{ uuid } successfully deleted"
-          }
-      else
+      unless kyoo.destroy
         fatal_error
       end
     else
@@ -46,7 +47,9 @@ class KyoosController < ApplicationController
   end
 
   def kyoo
-    @kyoo ||= current_user.kyoos.where( uuid: uuid )
+    @kyoo ||= current_user.
+                kyoos.
+                where( uuid: uuid )
   end
 
   def uuid
@@ -54,6 +57,8 @@ class KyoosController < ApplicationController
   end
 
   def kyoo_params
-    params.require( :kyoo ).permit( PERMITTED_ATTRIBUTES )
+    params.
+      require( :kyoo ).
+      permit( PERMITTED_ATTRIBUTES )
   end
 end
