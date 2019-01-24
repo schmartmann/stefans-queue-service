@@ -40,7 +40,7 @@ class MessagesController < ApplicationController
         fatal_error
       end
     else
-      missing_resource( Exception.new( "Could not retrieve kyoo #{ uuid }" ) )
+      missing_resource( Exception.new( "Could not retrieve message #{ uuid }" ) )
     end
   end
 

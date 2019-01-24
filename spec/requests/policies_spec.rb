@@ -120,7 +120,8 @@ RSpec.describe 'DELETE /policies/:uuid', type: :request do
     end
 
     it 'deletes user\'s access to kyoo' do
-      binding.pry
+      user_kyoos = user.kyoos
+      expect( user_kyoos ).to eq( [] )
     end
   end
 end

@@ -24,6 +24,19 @@ class PoliciesController < ApplicationController
     render_resource( policy )
   end
 
+  def destroy
+    policy = current_user.policies.where( uuid: policy_uuid ).first
+
+    unless policy.nil?
+      unless policy.destroy
+        fatal_error
+      end
+    else
+      missing_resource( Exception.new( "Could not retrieve policy #{ policy_uuid }" ) )
+    end
+
+  end
+
   private
 
   def user_policies
