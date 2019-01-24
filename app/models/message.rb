@@ -1,6 +1,8 @@
 class Message < ApplicationRecord
   include UUID
 
+  scope :unread, -> { where( read: false ) }
+
   #----------------------------------------------------------------------------
   # attributes
 

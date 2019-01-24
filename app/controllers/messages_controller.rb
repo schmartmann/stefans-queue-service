@@ -55,11 +55,11 @@ class MessagesController < ApplicationController
   end
 
   def messages
-    @messages ||= kyoo.messages
+    @messages ||= kyoo.messages.unread
   end
 
   def message
-    @message ||= kyoo.messages.where( uuid: uuid )
+    @message ||= kyoo.messages.unread.where( uuid: uuid )
   end
 
   def message_params
