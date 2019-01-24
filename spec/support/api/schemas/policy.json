@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false,
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "uuid": {
+      "type": "string"
+    },
+    "user": {
+      "type": "object"
+    },
+    "kyoo": {
+      "type": "object"
+    }
+  },
+  "required": [
+      "id",
+      "uuid",
+      "user",
+      "kyoo"
+  ],
+  "type": "object"
+}
