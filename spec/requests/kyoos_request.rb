@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'GET /kyoos', type: :request do
-  let( :kyoo )   { Fabricate( :kyoo ) }
-  let( :url )    { '/kyoos' }
+  let( :kyoo )  { Fabricate( :kyoo_with_users ) }
+  let( :user )  { kyoo.users.first }
+  let( :url )   { '/kyoos' }
 
   context 'authenticated' do
     context 'when params are correct' do
       before do
-        user = kyoo.users.first
-
         get url, headers: auth_headers( user )
       end
 
@@ -34,14 +33,13 @@ RSpec.describe 'GET /kyoos', type: :request do
 end
 
 RSpec.describe 'GET /kyoos/:uuid', type: :request do
-  let( :kyoo )   { Fabricate(:kyoo ) }
-  let( :uuid )   { kyoo.uuid }
-  let( :url )    { "/kyoos/#{ uuid }" }
+  let( :kyoo )  { Fabricate(:kyoo_with_users ) }
+  let( :user )  { kyoo.users.first }
+  let( :uuid )  { kyoo.uuid }
+  let( :url )   { "/kyoos/#{ uuid }" }
 
   context 'when params are correct' do
     before do
-      user = kyoo.users.first
-
       get url, headers: auth_headers( user )
     end
 
@@ -56,19 +54,18 @@ RSpec.describe 'GET /kyoos/:uuid', type: :request do
 end
 
 RSpec.describe 'POST /kyoos', type: :request do
+  let( :user )  { Fabricate( :user ) }
   let( :url )   { '/kyoos' }
   let( :params ) do
     {
       kyoo: {
-        name: "#{ Faker::TheThickOfIt.department }"
+        name: "#{ Faker::TheThickOfIt.department }-#{ SecureRandom.hex }"
       }
     }.to_json
   end
 
   context 'when params are correct' do
     before do
-      user = Fabricate( :user )
-
       post url, params: params, headers: auth_headers( user )
     end
 
@@ -83,8 +80,6 @@ RSpec.describe 'POST /kyoos', type: :request do
 
   context 'when name is missing' do
     before do
-      user = Fabricate( :user )
-
       kyoo = {
         kyoo: {
           name: nil
@@ -115,7 +110,7 @@ RSpec.describe 'POST /kyoos', type: :request do
     before do
       already_taken_name = JSON.parse( params )[ "kyoo" ][ "name" ]
 
-      kyoo = Fabricate( :kyoo, name: already_taken_name )
+      kyoo = Fabricate( :kyoo_with_users, name: already_taken_name )
 
       user = kyoo.users.first
 

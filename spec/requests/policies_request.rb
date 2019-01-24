@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'GET /policies', type: :request do
-  let( :user )      { Fabricate( :user ) }
-  let( :kyoo )      { Fabricate( :kyoo ) }
-  let( :url )       { '/policies' }
+  let( :policy )  { Fabricate( :policy ) }
+  let( :user )    { policy.user }
+  let( :url )     { '/policies' }
 
   context 'when params are correct' do
     before do
-      Fabricate( :policy, user: user, kyoo: kyoo )
-
       get url, headers: auth_headers( user )
     end
 
@@ -23,15 +21,13 @@ RSpec.describe 'GET /policies', type: :request do
 end
 
 RSpec.describe 'GET /policies/:uuid', type: :request do
-  let( :user )      { Fabricate( :user ) }
-  let( :kyoo )      { Fabricate( :kyoo ) }
+  let( :policy )  { Fabricate( :policy ) }
+  let( :user )    { policy.user }
+  let( :uuid )    { policy.uuid }
+  let( :url )     { "/policies/#{ uuid }" }
 
   context 'when params are correct' do
     before do
-      policy = Fabricate( :policy, user: user, kyoo: kyoo )
-
-      url = "/policies/#{ policy.uuid }"
-
       get url, headers: auth_headers( user )
     end
 
@@ -46,19 +42,20 @@ RSpec.describe 'GET /policies/:uuid', type: :request do
 end
 
 RSpec.describe 'POST /policies', type: :request do
-  let( :user )      { Fabricate( :user ) }
-  let( :kyoo )      { Fabricate( :kyoo ) }
-  let( :url )       { '/policies' }
+  let( :user )  { Fabricate( :user ) }
+  let( :kyoo )  { Fabricate( :kyoo ) }
+  let( :url )   { '/policies' }
+  let( :params ) do
+    {
+      policy: {
+        user_id: user.id,
+        kyoo_id: kyoo.id
+      }
+    }.to_json
+  end
 
   context 'when params are correct' do
     before do
-      params = {
-        policy: {
-          user_id: user.id,
-          kyoo_id: kyoo.id
-        }
-      }.to_json
-
       post url, params: params, headers: auth_headers( user )
     end
 
