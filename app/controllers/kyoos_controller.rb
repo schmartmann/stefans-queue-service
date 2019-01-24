@@ -17,14 +17,10 @@ class KyoosController < ApplicationController
   end
 
   def write
-    unless existing_kyoo
-      kyoo = current_user.kyoos.new( kyoo_params )
+    kyoo = current_user.kyoos.new( kyoo_params )
 
-      kyoo.save
-      render_resource( kyoo )
-    else
-      render_resource( existing_kyoo )
-    end
+    kyoo.save
+    render_resource( kyoo )
   end
 
   def destroy
@@ -55,10 +51,6 @@ class KyoosController < ApplicationController
 
   def uuid
     @uuid ||= params[ :uuid ]
-  end
-
-  def existing_kyoo
-    @existing_kyoo ||= kyoos.where( kyoo_params ).first
   end
 
   def kyoo_params

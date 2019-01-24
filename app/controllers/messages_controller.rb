@@ -20,14 +20,10 @@ class MessagesController < ApplicationController
   end
 
   def write
-    unless existing_message
-      message = kyoo.messages.new( message_params )
+    message = kyoo.messages.new( message_params )
 
-      message.save
-      render_resource( message )
-    else
-      render_resource( existing_message )
-    end
+    message.save
+    render_resource( message )
   end
 
   def destroy
@@ -49,10 +45,6 @@ class MessagesController < ApplicationController
 
   def message
     @message ||= kyoo.messages.where( uuid: uuid )
-  end
-
-  def existing_message
-    @existing_message ||= messages.where( message_params ).first
   end
 
   def message_params

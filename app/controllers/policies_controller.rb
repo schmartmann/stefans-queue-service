@@ -18,7 +18,6 @@ class PoliciesController < ApplicationController
   end
 
   def write
-
   end
 
   private
