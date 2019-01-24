@@ -18,6 +18,10 @@ class PoliciesController < ApplicationController
   end
 
   def write
+    policy = current_user.policies.new( policy_params )
+
+    policy.save
+    render_resource( policy )
   end
 
   private
