@@ -24,4 +24,19 @@ class Kyoo < ApplicationRecord
   has_many :policies, dependent: :destroy
 
   has_many :users, through: :policies
+
+  #----------------------------------------------------------------------------
+  # associations
+
+  def read_messages
+    self.messages.where( read: true )
+  end
+
+  def unread_messages
+    self.messages.where( read: false )
+  end
+
+  def user_emails
+    self.users.pluck( :email )
+  end
 end
