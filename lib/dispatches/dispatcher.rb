@@ -4,7 +4,7 @@ module Dispatches
   class Dispatcher
     def initialize( endpoint_url, body )
       @url = URI.parse( endpoint_url )
-      @body = json( body )
+      @body = body
     end
 
     def send
@@ -18,6 +18,7 @@ module Dispatches
 
     private; def http
       http = Net::HTTP.new( @url.host, @url.port )
+      http.read_timeout = 0.5
       http.use_ssl = check_ssl
       http
     end
@@ -33,7 +34,7 @@ module Dispatches
     end
 
     private; def json( body )
-      JSON.parse( body ) rescue body.to_json
+      JSON.parse( body ) rescue body
     end
 
     private; def parse_response( response )
