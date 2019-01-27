@@ -24,6 +24,8 @@ class Kyoo < ApplicationRecord
   has_many :policies, dependent: :destroy
 
   has_many :users, through: :policies
+  has_many :subscriptions
+  has_many :endpoints, through: :subscriptions
 
   #----------------------------------------------------------------------------
   # associations

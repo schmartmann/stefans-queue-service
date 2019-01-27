@@ -7,22 +7,26 @@ class Subscription < ApplicationRecord
   ATTRIBUTES = %i(
     uuid
     id
+    kyoo_id
+    user_id
   ).freeze
 
   #----------------------------------------------------------------------------
   # validations
 
-  # validates :name,
-  #           presence: true,
-  #           uniqueness: true
+  validates :user_id,
+            presence: true,
+            uniqueness: { scope: :kyoo_id }
+
+  validates :kyoo_id,
+            presence: true,
+            uniqueness: { scope: :user_id }
 
   #----------------------------------------------------------------------------
   # associations
 
   belongs_to :kyoo
   belongs_to :user
-
-  #----------------------------------------------------------------------------
-  # associations
+  has_many   :endpoints
 
 end
