@@ -29,4 +29,12 @@ class Message < ApplicationRecord
       self.update( read: true )
     end
   end
+
+  def content
+    JSON.parse( self.message_body )
+  end
+
+  def object
+    OpenStruct.new( self.content )
+  end
 end
