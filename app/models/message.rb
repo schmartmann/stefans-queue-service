@@ -24,7 +24,7 @@ class Message < ApplicationRecord
   # hooks
 
   before_save   :json
-  after_create  :dispatch_message
+  # after_create  :dispatch_message
 
   #----------------------------------------------------------------------------
   # associations
@@ -50,8 +50,11 @@ class Message < ApplicationRecord
   end
 
   def dispatch_message
-    url = 'http://localhost:8000/messages'
-    Dispatches::Dispatcher.new( url, self.message_body ).send
+    # url = 'http://localhost:8000/messages'
+    url = nil
+    unless url.nil?
+      Dispatches::Dispatcher.new( url, self.message_body ).send
+    end
   end
 
   def json

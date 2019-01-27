@@ -11,13 +11,10 @@
       "type": "string"
     },
     "message_body": {
-      "type": "json"
+      "type": "string"
     },
     "read": {
       "type": "boolean"
-    },
-    "kyoo": {
-      "type": "object"
     },
     "created_at": {
       "type": "string"
@@ -31,7 +28,6 @@
     "uuid",
     "message_body",
     "read",
-    "kyoo",
     "updated_at",
     "created_at"
   ],
