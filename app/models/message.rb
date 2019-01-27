@@ -1,5 +1,6 @@
 class Message < ApplicationRecord
   include UUID
+  include Dispatches
 
   scope :unread, -> { where( read: false ) }
 
@@ -20,6 +21,11 @@ class Message < ApplicationRecord
   validates :message_body, presence: true
 
   #----------------------------------------------------------------------------
+  # hooks
+
+  after_create  :dispatch_message
+
+  #----------------------------------------------------------------------------
   # associations
 
   belongs_to :kyoo
@@ -36,5 +42,13 @@ class Message < ApplicationRecord
 
   def object
     OpenStruct.new( self.content )
+  end
+
+  def kyoo_endpoints
+    self.kyoo_subscription_endpoints
+  end
+
+  def dispatch_message
+    Dispatches::Dispatcher.new( url, self.message_body ).send
   end
 end

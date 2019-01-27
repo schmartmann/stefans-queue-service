@@ -17,4 +17,5 @@ class User < ApplicationRecord
 
   has_many :policies
   has_many :kyoos, through: :policies
+  has_many :endpoints, through: :subscriptions
 end
